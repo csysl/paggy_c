@@ -9,6 +9,7 @@ add_executable(paggy_c main.cpp init.h
         func.h func.cpp
         key.h key.cpp  #ket agent
         user.h user.cpp #user
+        cs.h cs.cpp #server
         )
 
 # configure gmp++

@@ -11,11 +11,11 @@ double func::calPSNR(int **sourceImage, int **targetImage, int &size_x, int &siz
             MSE += pow((sourceImage[i][j] - targetImage[i][j]), 2);
         }
     }
-    cout << MSE << endl;
+//    cout << MSE << endl;
     MSE /= double(size_x * size_y);
-    cout << MSE << endl;
-    cout << sqrt(MSE) << endl;
-    cout << log10(255.0 / sqrt(MSE)) << endl;
+//    cout << MSE << endl;
+//    cout << sqrt(MSE) << endl;
+//    cout << log10(255.0 / sqrt(MSE)) << endl;
     auto PSNR = 20 * log10(255.0 / sqrt(MSE));
     return PSNR;
 };
@@ -58,6 +58,32 @@ mpz_class func::chineseRemainder(mpz_class *n, mpz_class *a, int len) {
     return sm % prod;
 }
 
-void func::mul_matmod(mpz_class a[4][4], mpz_class b[4][4], mpz_class &N, mpz_class **res) {
+void func::mul_matmod(mpz_class a[4][4], mpz_class b[4][4], mpz_class &N, mpz_class res[4][4]) {
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            for (int l = 0; l < 4; ++l)
+                res[i][j] += a[i][l] * b[l][j];
+            res[i][j] %= N;
+        }
+    }
+}
 
+void func::mul_matmod(mpz_class a[4][4], mpz_class b[4][4], mpz_class &N, mpz_class **res) {
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            for (int l = 0; l < 4; ++l)
+                res[i][j] += a[i][l] * b[l][j];
+            res[i][j] %= N;
+        }
+    }
+}
+
+void func::mul_matmod(mpz_class a[4][4], mpz_class **b, mpz_class &N, mpz_class res[4][4]) {
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            for (int l = 0; l < 4; ++l)
+                res[i][j] += a[i][l] * b[l][j];
+            res[i][j] %= N;
+        }
+    }
 }

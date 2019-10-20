@@ -14,8 +14,18 @@ int main(int argc, char **argv) {  //todo 输入的参数依次为：key.txt ima
     auto stime = chrono::system_clock::now();
     auto encryptImage = user.encryption();
     auto etime = chrono::system_clock::now();
-    std::chrono::duration<double> elapsed_seconds = etime - stime;
-    std::cout << "USER对图像加密的时间是: " << elapsed_seconds.count() << "s\n";
+    chrono::duration<double> elapsed_seconds = etime - stime;
+    cout << "USER对图像加密的时间是: " << elapsed_seconds.count() << "s\n";
+
+    /*用户解密图像*/
+    stime = chrono::system_clock::now();
+    user.decryption(encryptImage);
+    etime = chrono::system_clock::now();
+    elapsed_seconds = etime - stime;
+    cout << "USER对图像解密的时间是: " << elapsed_seconds.count() << "s\n";
+
+//    user.testendecry();
+
 
     /**/
 
