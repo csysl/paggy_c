@@ -38,6 +38,7 @@ USER::USER(KA &ka, string &input, int &sizex, int &sizey) {
         }
     }
     in.close();
+    addGaussNoise();//添加高斯噪声
 }
 
 USER::~USER() {
@@ -120,7 +121,6 @@ mpz_class ****USER::encryption() {
             }
         }
     }
-    addGaussNoise();//添加高斯噪声
     cout << "标准差是" << sigma << "时噪声图像和源图像的PSNR是：" << func::calPSNR(grayimage, gaussimage, size_x, size_y) << endl;
     //图像进行加密
     mpz_class tmp[4][4];  //TODO 放在外面是为了节省时间，但不直观，实际节省的时间可以忽略不计
