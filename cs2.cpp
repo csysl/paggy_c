@@ -8,5 +8,17 @@
     @ref:
 */
 
+#include "init.h"
+#include "key.h"
 
+/*图像*/
+int size_x, size_y, size_i;
+mpz_class ****originimage, ****encryimage, ****padimage;
+
+/*加解密*/
+
+
+void csInit(KA &ka, mpz_class ****image, int &sizex, int &sizey, int &num) {
+
+}
 
