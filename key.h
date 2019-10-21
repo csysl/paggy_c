@@ -5,7 +5,12 @@
 #ifndef PAGGY_C_KEY_H
 #define PAGGY_C_KEY_H
 
-#include "init.h"
+//#include "init.h"
+#include <bits/stdc++.h>
+#include <gmpxx.h>
+#include <gmp.h>
+
+using namespace std;
 
 class KA {
 public:

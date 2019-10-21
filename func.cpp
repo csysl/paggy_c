@@ -41,9 +41,8 @@ mpz_class func::mulInv(mpz_class a, mpz_class b) {
 }
 
 mpz_class func::chineseRemainder(mpz_class *n, mpz_class *a, int len) {
-    mpz_class prod = 1, p;
+    mpz_class prod = 1, p, sm = 0;
     for (int i = 0; i < len; i++) prod *= n[i];
-    mpz_class sm = 0;
     for (int i = 0; i < len; i++) {
         p = prod / n[i];
         sm += a[i] * mulInv(p, n[i]) * p;

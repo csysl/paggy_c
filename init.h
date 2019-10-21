@@ -9,8 +9,16 @@
 #include <gmpxx.h>
 #include <gmp.h>
 #include "func.h"
+#include "key.h"
 
 using namespace std;
 using namespace func;
+
+/*USER*/
+void userInit(KA &ka, string &input, int &sizex, int &sizey, int &num);
+void addGaussNoise();
+mpz_class ****userEncryption();
+void userDecryption(mpz_class ****denoseimage);
+void usertestendecry();
 
 #endif //PAGGY_C_INIT_H

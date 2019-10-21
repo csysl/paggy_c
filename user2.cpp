@@ -1,10 +1,26 @@
-//
-// Created by sun on 2019/10/19.
-//
+/*  coding: utf-8
+    @project:paggy_c
+    @file:user2.h
+    @ide:CLion
+    @time:2019-10-21 10:53
+    @author:sun
+    @todo:
+    @ref:
+*/
 
-#include "user.h"
+#include "init.h"
+#include "key.h"
 
-USER::USER(KA &ka, string &input, int &sizex, int &sizey) {
+int size_x, size_y, size_i, th_num = 1;
+double sigma;
+int **grayimage, **gaussimage, **resultimage;
+int uM;
+mpz_class uSCAL = 1, *uF, uN, uR;
+mpz_class uK[4][4], uinvK[4][4];
+mpz_class ****encryptimage;
+
+void userInit(KA &ka, string &input, int &sizex, int &sizey, int &num) {
+    th_num = num;
     size_x = sizex, size_y = sizey;
     size_i = size_x * size_y;
     sigma = ka.sigma;   //cout<<sigma<<endl;
@@ -16,8 +32,6 @@ USER::USER(KA &ka, string &input, int &sizex, int &sizey) {
         }
     }
     //cout << uSCAL << endl;
-
-    uA = new mpz_class[uM], uB = new mpz_class[uM], uC = new mpz_class[uM];
 
     //读取图片
     ifstream in;
@@ -41,10 +55,9 @@ USER::USER(KA &ka, string &input, int &sizex, int &sizey) {
     addGaussNoise();//添加高斯噪声
 }
 
-USER::~USER() {
+void userErasememory() {
     for (int i = 0; i < size_x; ++i)delete[]grayimage[i], delete[]gaussimage[i], delete[]resultimage[i];
     delete[]grayimage, delete[]gaussimage, delete[]resultimage;
-    delete[]uA, delete[]uB, delete[]uC;
     for (int i = 0; i < size_x; ++i) {
         for (int j = 0; j < size_y; ++j) {
             for (int l = 0; l < 4; ++l)
@@ -56,8 +69,7 @@ USER::~USER() {
     delete[]encryptimage;
 }
 
-//对原图像添加高斯噪生
-void USER::addGaussNoise() {
+void addGaussNoise() {
     random_device r;
     default_random_engine e{r()};
     normal_distribution<double> gauss{0, sigma};
@@ -70,7 +82,7 @@ void USER::addGaussNoise() {
     }
 }
 
-void USER::gainABC(int &pixel) {
+void gainABC(int &pixel, mpz_class *uA, mpz_class *uB, mpz_class *uC) {
     random_device r;
     default_random_engine e(r());
     uniform_real_distribution<double> u(0.0, 1.0);
@@ -88,28 +100,37 @@ void USER::gainABC(int &pixel) {
     }
 }
 
-void USER::gainabc() {
+void gainabc(mpz_class &ua, mpz_class &ub, mpz_class &uc, mpz_class *uA, mpz_class *uB, mpz_class *uC) {
     ua = func::chineseRemainder(uF, uA, uM) % uN;  //这里应该不会出错，中国同余定理自己测试过
     ub = func::chineseRemainder(uF, uB, uM) % uN;
     uc = func::chineseRemainder(uF, uC, uM) % uN;
 }
 
-void USER::gainDiag(int &pixel) {
+void gainDiag(int &pixel, mpz_class &ua, mpz_class &ub, mpz_class &uc, mpz_class diag[4][4]) {
     diag[0][0] = pixel;
     diag[1][1] = ua, diag[2][2] = ub, diag[3][3] = uc;
 }
 
 //对单个高斯图像进行加密，返回4*4矩阵
-void USER::encryptpixel(int &pixel, mpz_class **enimg, mpz_class tmp[4][4]) {
-    gainABC(pixel);
-    gainabc();
-    gainDiag(pixel);
-    func::mul_matmod(uinvK, diag, uN, tmp);
-    func::mul_matmod(tmp, uK, uN, enimg);
+void encryptpixel(int start, int end, int **scrimg, mpz_class ****enimg) {
+    mpz_class tmp[4][4], diag[4][4];
+    auto *uA = new mpz_class[uM], *uB = new mpz_class[uM], *uC = new mpz_class[uM];
+    mpz_class ua, ub, uc;
+    for (int i = start; i < end; ++i) {
+        for (int j = 0; j < size_y; ++j) {
+            for (auto &ii : tmp)for (auto &jj : ii)jj = 0;
+            gainABC(scrimg[i][j], uA, uB, uC);
+            gainabc(ua, ub, uc, uA, uB, uC);
+            gainDiag(scrimg[i][j], ua, ub, uc, diag);
+            func::mul_matmod(uinvK, diag, uN, tmp);
+            func::mul_matmod(tmp, uK, uN, enimg[i][j]);
+        }
+    }
+    delete[]uA, delete[]uB, delete[]uC;
 }
 
 //对高斯图像进行加密
-mpz_class ****USER::encryption() {
+mpz_class ****userEncryption() {
     //初始化加密后的图像
     encryptimage = new mpz_class ***[size_x];
     for (int i = 0; i < size_x; ++i) {
@@ -122,33 +143,21 @@ mpz_class ****USER::encryption() {
         }
     }
     cout << "标准差是" << sigma << "时噪声图像和源图像的PSNR是：" << func::calPSNR(grayimage, gaussimage, size_x, size_y) << endl;
+
     //图像进行加密
-    mpz_class tmp[4][4];  //TODO 放在外面是为了节省时间，但不直观，实际节省的时间可以忽略不计
-    for (int i = 0; i < size_x; ++i) {
-        for (int j = 0; j < size_y; ++j) {
-            for (auto & ii : tmp)for (auto & jj : ii)jj = 0;
-            encryptpixel(gaussimage[i][j], encryptimage[i][j], tmp);
-        }
+    std::thread th[size_x / th_num];
+    for (int i = 0; i < size_x / th_num; ++i) {
+        th[i] = thread(
+                [=]() {
+                    encryptpixel(i * th_num, (i + 1) * th_num, gaussimage, encryptimage);
+                }
+        );
     }
+    for (int i = 0; i < size_x / th_num; ++i)th[i].join();
     return encryptimage;
 }
 
-/*尝试多线程，其中ABC，abc，diag涉及write操作，所以没继续写(感觉要全部重写)*/
-/*void thencryptpixel(int &pixel, mpz_class **enimg, mpz_class tmp[4][4]){
-
-}
-
-void thencryption(int **gaussimage,mpz_class ****encryptimage,int start, int end,int width){
-    mpz_class tmp[4][4];
-    for (int i = start; i < end; ++i) {
-        for (int j = 0; j < width; ++j) {
-            for (auto & ii : tmp)for (auto & jj : ii)jj = 0;
-            thencryptpixel(gaussimage[i][j], encryptimage[i][j], tmp);
-        }
-    }
-}*/
-
-void USER::decryption(mpz_class ****denoseimage) {
+void userDecryption(mpz_class ****denoseimage) {
     mpz_class tmp[4][4], tmp2[4][4];
     for (int i = 0; i < size_x; ++i) {
         for (int j = 0; j < size_y; ++j) {
@@ -160,25 +169,8 @@ void USER::decryption(mpz_class ****denoseimage) {
     }
 }
 
-
-/*todo 下面的函数用做测试*/
-
-void USER::test(int a) {}
-
-void USER::testaddgauss() {
-    addGaussNoise();
-    cout << "高斯图像是：" << endl;
-    for (int i = 0; i < size_x; ++i) {
-        for (int j = 0; j < size_y; ++j) {
-            cout << gaussimage[i][j] << " ";
-        }
-        cout << endl;
-    }
-    cout << "标准差是" << sigma << "时噪声图像和源图像的PSNR是：" << func::calPSNR(gaussimage, grayimage, size_x, size_y) << endl;
-
-}
-
-void USER::testendecry() {
+/*以下函数用做测试*/
+void usertestendecry() {
     for (int i = 0; i < size_x; ++i) {
         for (int j = 0; j < size_y; ++j) {
             cout << gaussimage[i][j] << " ";

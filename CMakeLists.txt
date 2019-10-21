@@ -10,7 +10,13 @@ add_executable(paggy_c main.cpp init.h
         key.h key.cpp  #ket agent
         user.h user.cpp #user
         cs.h cs.cpp #server
+        #multithread
+        user2.cpp
         )
 
 # configure gmp++
 target_link_libraries(paggy_c gmp gmpxx)
+
+# configure threads
+find_package(Threads)
+target_link_libraries (${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT})
