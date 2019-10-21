@@ -30,6 +30,9 @@ int main(int argc, char **argv) {  //todo 输入的参数依次为：key.txt ima
     elapsed_seconds = etime - stime;
     cout << "USER对图像解密的时间是: " << elapsed_seconds.count() << "s\n";
 
+    /*释放内存*/
+    userErasememory();
+
     //user.testendecry();
     //usertestendecry();
 

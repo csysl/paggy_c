@@ -8,10 +8,10 @@ set(CMAKE_CXX_STANDARD 17)
 add_executable(paggy_c main.cpp init.h
         func.h func.cpp
         key.h key.cpp  #ket agent
-        user.h user.cpp #user
-        cs.h cs.cpp #server
+#        user.h user.cpp #user
+#        cs.h cs.cpp #server
         #multithread
-        user2.cpp
+        user2.cpp cs2.cpp
         )
 
 # configure gmp++

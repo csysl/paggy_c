@@ -56,6 +56,7 @@ void userInit(KA &ka, string &input, int &sizex, int &sizey, int &num) {
 }
 
 void userErasememory() {
+    /*uF的内存由key agent释放*/
     for (int i = 0; i < size_x; ++i)delete[]grayimage[i], delete[]gaussimage[i], delete[]resultimage[i];
     delete[]grayimage, delete[]gaussimage, delete[]resultimage;
     for (int i = 0; i < size_x; ++i) {
@@ -154,6 +155,8 @@ mpz_class ****userEncryption() {
         );
     }
     for (int i = 0; i < size_x / th_num; ++i)th[i].join();
+    //uF回空
+    uF = nullptr;
     return encryptimage;
 }
 
