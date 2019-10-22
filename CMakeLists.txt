@@ -11,7 +11,7 @@ add_executable(paggy_c main.cpp init.h
 #        user.h user.cpp #user
 #        cs.h cs.cpp #server
         #multithread
-        user2.cpp cs2.cpp
+        user2.cpp #cs2.cpp
         )
 
 # configure gmp++

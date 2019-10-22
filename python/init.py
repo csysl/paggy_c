@@ -25,8 +25,8 @@ sigma = np.sqrt(sigma)#.astype(int)
 
 
 # todo encryption
-M = 4  # 加密算法的M值  #
-bits = 32  # 加密算法产生的密钥长度为2*M*bits
+M = 10  # 加密算法的M值  #
+bits = 256  # 加密算法产生的密钥长度为2*M*bits
 
 # todo 去噪
 H = 20  # 应该是k的10倍 180
