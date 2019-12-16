@@ -10,3 +10,6 @@
 
 #### user:
 - encryptimage  自己释放
+
+
+#### 接受的参数paramxx.txt  img.txt 256 256 thread_num

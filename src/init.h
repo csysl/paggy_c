@@ -8,8 +8,8 @@
 #include <bits/stdc++.h>
 #include <gmpxx.h>
 #include <gmp.h>
-#include "func.h"
-#include "key.h"
+#include "func/func.h"
+#include "key/key.h"
 
 using namespace std;
 using namespace func;

@@ -9,7 +9,7 @@
 */
 
 #include "init.h"
-#include "key.h"
+#include "key/key.h"
 
 int size_x, size_y, size_i, th_num = 1;
 double sigma;

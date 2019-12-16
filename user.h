@@ -5,8 +5,8 @@
 #ifndef PAGGY_C_USER_H
 #define PAGGY_C_USER_H
 
-#include "init.h"
-#include "key.h"
+#include "src/init.h"
+#include "src/key/key.h"
 
 class USER {
 private:

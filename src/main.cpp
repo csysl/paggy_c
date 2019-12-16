@@ -4,10 +4,11 @@
 
 using namespace std;
 
-int main(int argc, char **argv) {  //todo 输入的参数依次为：key.txt image.txt pixel_x pixel_y
+int main(int argc, char **argv) {  //todo 输入的参数依次为：key.txt image.txt pixel_x pixel_y  thread_num
     string keyinput = argv[1], imageinput = argv[2];
-    int sizex = atoi(argv[3]), sizey = atoi(argv[4]);
-    int th_num = atoi(argv[5]);
+
+    int sizex = stoi(argv[3], nullptr), sizey = stoi(argv[4], nullptr);
+    int th_num = stoi(argv[5], nullptr);
 
     /*声明key agent*/
     KA ka(keyinput);

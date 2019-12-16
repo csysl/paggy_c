@@ -12,8 +12,8 @@
 #ifndef PAGGY_C_CS_H
 #define PAGGY_C_CS_H
 
-#include "init.h"
-#include "key.h"
+#include "src/init.h"
+#include "src/key/key.h"
 
 class CS{
 private:

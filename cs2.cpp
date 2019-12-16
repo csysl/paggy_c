@@ -8,8 +8,8 @@
     @ref:
 */
 
-#include "init.h"
-#include "key.h"
+#include "src/init.h"
+#include "src/key/key.h"
 
 /*图像*/
 int size_x, size_y, size_i;

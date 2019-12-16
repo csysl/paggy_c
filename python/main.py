@@ -19,10 +19,10 @@ img = cv2.imread(init.imagepath, cv2.IMREAD_GRAYSCALE)
 # TP为密钥生成器并生成密钥
 TP = Encryption(init.M, init.bits)
 TP.gainParam()  # 生成密钥和参数
-TP.writeFile(path='../')  # 将密钥写入到txt，目的是为了c++程序读取
+TP.writeFile(path='../param/')  # 将密钥写入到txt，目的是为了c++程序读取
 print(len(img),len(img[0]))
 
 # 将其他参数写入txt
-with open('../param' + str(init.bits) + '.txt', 'a') as f:
+with open('../param/param' + str(init.bits) + '.txt', 'a') as f:
     for it in [init.L, init.S, init.sigma, init.H]:
         print(it, file=f, end=' ')
