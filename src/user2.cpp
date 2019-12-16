@@ -11,13 +11,15 @@
 #include "init.h"
 #include "key/key.h"
 
-int size_x, size_y, size_i, th_num = 1;
-double sigma;
-int **grayimage, **gaussimage, **resultimage;
-int uM;
-mpz_class uSCAL = 1, *uF, uN, uR;
-mpz_class uK[4][4], uinvK[4][4];
-mpz_class ****encryptimage;
+namespace {
+    int size_x, size_y, size_i, th_num = 1;
+    double sigma;
+    int **grayimage, **gaussimage, **resultimage;
+    int uM;
+    mpz_class uSCAL = 1, *uF, uN, uR;
+    mpz_class uK[4][4], uinvK[4][4];
+    mpz_class ****encryptimage;
+}
 
 void userInit(KA &ka, string &input, int &sizex, int &sizey, int &num) {
     th_num = num;

@@ -8,7 +8,8 @@
 #include "src/init.h"
 #include "src/key/key.h"
 
-class USER {
+class USER//public KA
+        {
 private:
     int size_x, size_y, size_i;
     double sigma;
