@@ -19,9 +19,9 @@ public:
     double sigma;
     mpz_class N, R;  //存放N,M,R
     mpz_class *F;
-    mpz_class K1[4][4], invK1[4][4];
-    mpz_class K2[4][4], invK2[4][4], Kcs2[4][4], invKcs2[4][4];
-    mpz_class Kcs1[4][4], invKcs1[4][4];
+    mpz_class K1[4][4], invK1[4][4];  //user
+    mpz_class K2[4][4], invK2[4][4], Kcs2[4][4], invKcs2[4][4];  //cs1
+    mpz_class Kcs1[4][4], invKcs1[4][4];  //cs2
 
 
 public:

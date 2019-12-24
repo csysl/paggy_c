@@ -1,6 +1,7 @@
 #include "init.h"
 //#include "key.h"
 //#include "user.h"
+#include "cs.h"
 
 using namespace std;
 
@@ -23,6 +24,14 @@ int main(int argc, char **argv) {  //todo 输入的参数依次为：key.txt ima
     chrono::duration<double> elapsed_seconds = etime - stime;
     cout << "USER对图像加密的时间是: " << elapsed_seconds.count() << "s\n";
 
+
+
+    /*cs对用户图像二次加密*/
+    CS cs(ka, sizex, sizey, th_num);
+    cs.CS1encryptImage(encryptimage);
+
+
+
     /*用户解密图像*/
     stime = chrono::system_clock::now();
     //user.decryption(encryptImage);
@@ -30,12 +39,7 @@ int main(int argc, char **argv) {  //todo 输入的参数依次为：key.txt ima
     etime = chrono::system_clock::now();
     elapsed_seconds = etime - stime;
     cout << "USER对图像解密的时间是: " << elapsed_seconds.count() << "s\n";
-
-
-
-    //user.testendecry();
-//    usertestendecry();
-
+    usertestendecry();
 
     /**/
 

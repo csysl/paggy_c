@@ -148,15 +148,15 @@ mpz_class ****userEncryption() {
     cout << "标准差是" << sigma << "时噪声图像和源图像的PSNR是：" << func::calPSNR(grayimage, gaussimage, size_x, size_y) << endl;
 
     //图像进行加密
-    std::thread th[size_x / th_num];
-    for (int i = 0; i < size_x / th_num; ++i) {
+    std::thread th[th_num];
+    for (int i = 0; i < th_num; ++i) {
         th[i] = thread(
                 [=]() {
-                    encryptpixel(i * th_num, (i + 1) * th_num, gaussimage, encryptimage);
+                    encryptpixel(i * (size_x / th_num), (i + 1) * (size_x / th_num), gaussimage, encryptimage);
                 }
         );
     }
-    for (int i = 0; i < size_x / th_num; ++i)th[i].join();
+    for (int i = 0; i < th_num; ++i)th[i].join();
     //uF回空
     uF = nullptr;
     return encryptimage;
@@ -176,14 +176,16 @@ void userDecryption(mpz_class ****denoseimage) {
 
 /*以下函数用做测试*/
 void usertestendecry() {
-    for (int i = 0; i < size_x; ++i) {
-        for (int j = 0; j < size_y; ++j) {
-            cout << gaussimage[i][j] << " ";
+    try {
+        for (int i = 0; i < size_x; ++i) {
+            for (int j = 0; j < size_y; ++j) {
+                if(gaussimage[i][j]!=resultimage[i][j])
+                    throw exception();
+            }
         }
-        cout << endl;
-        for (int j = 0; j < size_y; ++j) {
-            cout << resultimage[i][j] << " ";
-        }
-        cout << endl;
+    }catch(const exception &e){
+        cout<<"error"<<endl;
+        exit(1);
     }
+    cout<<"检测加解密没错"<<endl;
 }

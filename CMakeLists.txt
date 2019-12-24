@@ -9,7 +9,7 @@ add_executable(paggy_c src/main.cpp src/init.h
         src/func/func.h src/func/func.cpp
         src/key/key.h src/key/key.cpp  #ket agent
 #        user.h user.cpp #user
-#        cs.h cs.cpp #server
+        src/cs.h src/cs.cpp #server
         #multithread
         src/user2.cpp #cs2.cpp
         )
