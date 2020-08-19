@@ -114,7 +114,7 @@ void gainDiag(int &pixel, mpz_class &ua, mpz_class &ub, mpz_class &uc, mpz_class
     diag[1][1] = ua, diag[2][2] = ub, diag[3][3] = uc;
 }
 
-//对单个高斯图像进行加密，返回4*4矩阵
+//对单个高斯图像pixel进行加密，返回4*4矩阵
 void encryptpixel(int start, int end, int **scrimg, mpz_class ****enimg) {
     mpz_class tmp[4][4], diag[4][4];
     auto *uA = new mpz_class[uM], *uB = new mpz_class[uM], *uC = new mpz_class[uM];
